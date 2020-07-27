@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
-import { fetchAgenda, Agenda } from "./fetchAgenda";
+import { fetchAgenda } from "./fetchAgenda";
+import { Agenda, Timeslot, Day } from "./agenda.models";
 
 class App extends React.Component<{}, { agenda?: Agenda; loaded: boolean }> {
   constructor(props: {}) {
@@ -28,7 +29,7 @@ class App extends React.Component<{}, { agenda?: Agenda; loaded: boolean }> {
       <div className="App">
         <header className="App-header">
           {Object.keys(agenda).map((day) => {
-            const timeslots = agenda[day];
+            const timeslots: Timeslot[] = agenda[day as Day];
 
             return (
               <div key={day}>

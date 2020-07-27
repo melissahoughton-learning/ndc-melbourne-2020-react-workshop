@@ -1,68 +1,25 @@
-import agenda from "./agenda.json";
+import { Agenda, Session, Timeslot, Time } from "./agenda.models";
+import data from "./agenda.json";
 
-export type Session = {
-  title: string;
-  speaker: string;
-  location: string;
-  link: string;
-  tags: string[];
-  day: string;
-  startTime: {
-    hour: number;
-    minutes: number;
-  };
-  endTime: {
-    hour: number;
-    minutes: number;
-  };
-};
-
-export type Timeslot = {
-  startTime: {
-    hour: number;
-    minutes: number;
-  };
-  endTime: {
-    hour: number;
-    minutes: number;
-  };
-  sessions: Session[];
-};
-
-export type Agenda = {
-  [key: string]: Timeslot[];
-};
-
-function shallowCompare(left: any, right: any) {
-  if (left === right) {
-    return true;
-  }
-
-  const leftKeys = Object.keys(left);
-
-  for (let lk of leftKeys) {
-    if (left[lk] !== right[lk]) {
-      return false;
-    }
-  }
-
-  return true;
-}
+const compareTime = (timeA: Time, timeB: Time) =>
+  timeA.hour === timeB.hour && timeA.minutes === timeB.minutes;
 
 const fetchAgenda = () => {
-  let days: Agenda = {};
+  let agenda: Agenda = {
+    wednesday: [],
+    thursday: [],
+    friday: [],
+  };
 
-  for (let i = 0; i < agenda.length; i++) {
-    const session: Session = agenda[i];
+  let sessions = data as Session[];
 
-    if (!days[session.day]) {
-      days[session.day] = [];
-    }
+  for (let session of sessions) {
+    let currentDayTimeslots = agenda[session.day];
 
-    let timeslot = days[session.day].find((ts) => {
+    let timeslot = currentDayTimeslots.find((slot: Timeslot) => {
       return (
-        shallowCompare(ts.startTime, session.startTime) &&
-        shallowCompare(ts.endTime, session.endTime)
+        compareTime(slot.startTime, session.startTime) &&
+        compareTime(slot.endTime, session.endTime)
       );
     });
 
@@ -71,14 +28,15 @@ const fetchAgenda = () => {
         startTime: session.startTime,
         endTime: session.endTime,
         sessions: [],
+        day: session.day,
       };
-      days[session.day].push(timeslot);
+      currentDayTimeslots.push(timeslot);
     }
 
     timeslot.sessions.push(session);
   }
 
-  return Promise.resolve(days);
+  return Promise.resolve(agenda);
 };
 
 export { fetchAgenda };
