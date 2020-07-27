@@ -1,18 +1,20 @@
 import React from "react";
 import TimeslotComponent from "./Timeslot";
 import { Timeslot, Day } from "../agenda.models";
+import { TitleHeader } from "./styled/headers";
+import { TimeList } from "./styled/timelist";
 
 const DayComponent: React.FC<{ timeslots: Timeslot[]; day: Day }> = ({
   timeslots,
   day,
 }) => (
   <div key={day}>
-    <h2>{day}</h2>
-    <ul>
+    <TitleHeader>{day}</TitleHeader>
+    <TimeList>
       {timeslots.map((timeslot) => (
         <TimeslotComponent timeslot={timeslot} key={timeslot.startTime.hour} />
       ))}
-    </ul>
+    </TimeList>
   </div>
 );
 

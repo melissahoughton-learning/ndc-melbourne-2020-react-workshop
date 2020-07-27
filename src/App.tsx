@@ -19,21 +19,15 @@ class App extends React.Component<{}, { agenda?: Agenda; loaded: boolean }> {
     const { agenda, loaded } = this.state;
 
     if (!agenda || !loaded) {
-      return (
-        <div className="App">
-          <header className="App-header">Loading...</header>
-        </div>
-      );
+      return <div className="App">Loading...</div>;
     }
 
     return (
       <div className="App">
-        <header className="App-header">
-          {Object.keys(agenda).map((dayString: string) => {
-            const day = dayString as Day;
-            return <DayComponent timeslots={agenda[day]} day={day} />;
-          })}
-        </header>
+        {Object.keys(agenda).map((dayString: string) => {
+          const day = dayString as Day;
+          return <DayComponent timeslots={agenda[day]} day={day} key={day} />;
+        })}
       </div>
     );
   }
