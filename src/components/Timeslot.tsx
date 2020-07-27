@@ -5,7 +5,11 @@ import Talk from "./Talk";
 import { Timeslot } from "../agenda.models";
 import TimeComponent from "./Time";
 
-const TimeListItem = styled.li``;
+const TimeListItem = styled.li`
+  display: block;
+  border: white 1px solid;
+  padding: 20px;
+`;
 
 const TimeslotComponent: React.FC<{ timeslot: Timeslot }> = ({ timeslot }) => {
   const sessions = timeslot.sessions;

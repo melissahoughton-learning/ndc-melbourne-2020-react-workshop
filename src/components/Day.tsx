@@ -6,6 +6,7 @@ import { Timeslot, Day } from "../agenda.models";
 
 const TimeList = styled.ul`
   list-style-type: none;
+  padding: 0;
 `;
 
 const DayComponent: React.FC<{ timeslots: Timeslot[]; day: Day }> = ({
